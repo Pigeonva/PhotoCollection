@@ -29,8 +29,6 @@ class DetailViewController: UIViewController {
         closeButton.setTitleColor(.black, for: .normal)
         closeButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         
-        
-        
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(closeButton)
         closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
@@ -54,11 +52,7 @@ class DetailViewController: UIViewController {
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -300).isActive = true
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-//        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         
-//        imageView.frame = CGRect(x: 0, y: 0, width: image!.size.width/3, height: image!.size.height/3)
-        
-      
         
     }
     
