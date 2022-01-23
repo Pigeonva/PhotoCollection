@@ -16,6 +16,10 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     private var timer: Timer?
     
     private var photos = [UnsplashPhoto]()
+    
+    private let itemPerRow: CGFloat = 2
+    
+    private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +49,8 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
         view.addSubview(collectionView)
         collectionView.frame = view.bounds
         
+        collectionView.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+        collectionView.contentInsetAdjustmentBehavior = .automatic
     }
     
     private func setupSearchBar() {
@@ -80,5 +86,25 @@ extension PhotoViewController: UISearchBarDelegate {
                 self?.collectionView?.reloadData()
             }
         })
+    }
+}
+
+extension PhotoViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let photo = photos[indexPath.item]
+        let paddingSpace = sectionInserts.left * (itemPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
+        let widthPerItem = availableWidth / itemPerRow
+        let height = CGFloat(photo.height) * widthPerItem / CGFloat(photo.width)
+        return CGSize(width: widthPerItem, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInserts
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInserts.left
     }
 }
