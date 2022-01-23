@@ -17,6 +17,8 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     private var photos = [UnsplashPhoto]()
     
+    private var user = [UnsplashPhoto]()
+    
     private let itemPerRow: CGFloat = 2
     
     private let sectionInserts = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
@@ -27,6 +29,8 @@ class PhotoViewController: UIViewController, UICollectionViewDelegate, UICollect
        setCollectionView()
         setupSearchBar()
     }
+    
+    
     
     private func setCollectionView() {
         
@@ -79,7 +83,7 @@ extension PhotoViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print(searchText)
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
             self.networkDataFetcher.fetchImages(searchTerm: searchText) {[weak self] (searchResults) in
                     guard let fetchedPhotos = searchResults else {return}
                     self?.photos = fetchedPhotos.results
@@ -106,5 +110,21 @@ extension PhotoViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInserts.left
+    }
+}
+
+extension PhotoViewController {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath) as! CustomCollectionViewCell
+        guard let image = cell.photoImageView.image else {return}
+        
+        let detailVC = DetailViewController()
+        
+        detailVC.image = image
+        let navVC = UINavigationController(rootViewController: detailVC)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true, completion: nil)
     }
 }
